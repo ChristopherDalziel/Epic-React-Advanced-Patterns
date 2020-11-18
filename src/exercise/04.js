@@ -4,6 +4,15 @@
 import React from 'react'
 import { Switch } from '../switch'
 
+// *call all functions, function* - cleaner solution, allows you to call any number of functions with any number of arguments
+function callAllFunctions(...fns) {
+  return (...args) => {
+    fns.forEach(fn => {
+      fn && fn(...args)
+    })
+  }
+}
+
 function useToggle() {
   const [on, setOn] = React.useState(false)
   const toggle = () => setOn(!on)
@@ -15,14 +24,23 @@ function useToggle() {
   // }
 
   // *extension*
+  // function getTogglerProps({ onClick, ...props }) {
+  //   return {
+  //     'aria-pressed': on,
+  //     onClick: () => {
+  //       onClick && onClick()
+  //       toggle()
+  //     },
+  //     ...props
+  //   }
+  // }
+
+  // *callallfunctions* - onClick we call ALL our functions, and our callAllFunctions function, decides if it's just a standard onClick with one function or multiple. in our situation allowing our onClick console.log return as well as our toggle function.
   function getTogglerProps({ onClick, ...props }) {
     return {
       'aria-pressed': on,
-      onClick: () => {
-        onClick && onClick()
-        toggle()
-      },
-      ...props
+      onClick: callAllFunctions(onClick, toggle),
+      ...props,
     }
   }
 
