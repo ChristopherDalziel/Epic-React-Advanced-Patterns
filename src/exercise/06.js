@@ -43,7 +43,7 @@ function useToggle({
     if (!hasOnChange && onIsControlled && !readOnly) {
       console.error(`An \`on\` prop was provided to useToggle without an \`onChange\` handler. This will render a read-only toggle. If you want it to be mutable, use \`initialOn\`. Otherwise, set either \`onChange\` or \`readOnly\`.`)
     }
-  })
+  }, [hasOnChange, onIsControlled, readOnly])
 
   function dispatchWithOnChange(action) {
     if (!onIsControlled) {
